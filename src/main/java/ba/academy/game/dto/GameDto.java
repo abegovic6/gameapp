@@ -1,12 +1,13 @@
 package ba.academy.game.dto;
 
 import java.util.LinkedList;
+import java.util.Random;
 
 public class GameDto {
     private Integer id;
+    private Integer score = 0;
 
     private LinkedList<LevelDto> levelDtos = new LinkedList<>();
-
     private LevelDto currentLevelDto;
     private PlayerDto playerDto;
 
@@ -21,28 +22,36 @@ public class GameDto {
         this.id = id;
     }
 
-    public LevelDto getCurrentLevel() {
-        return currentLevelDto;
+    public Integer getScore() {
+        return score;
     }
 
-    public void setCurrentLevel(LevelDto currentLevelDto) {
-        this.currentLevelDto = currentLevelDto;
+    public void setScore(Integer score) {
+        this.score = score;
     }
 
-    public PlayerDto getPlayer() {
-        return playerDto;
-    }
-
-    public void setPlayer(PlayerDto playerDto) {
-        this.playerDto = playerDto;
-    }
-
-    public LinkedList<LevelDto> getLevels() {
+    public LinkedList<LevelDto> getLevelDtos() {
         return levelDtos;
     }
 
-    public void setLevels(LinkedList<LevelDto> levelDtos) {
+    public void setLevelDtos(LinkedList<LevelDto> levelDtos) {
         this.levelDtos = levelDtos;
+    }
+
+    public LevelDto getCurrentLevelDto() {
+        return currentLevelDto;
+    }
+
+    public void setCurrentLevelDto(LevelDto currentLevelDto) {
+        this.currentLevelDto = currentLevelDto;
+    }
+
+    public PlayerDto getPlayerDto() {
+        return playerDto;
+    }
+
+    public void setPlayerDto(PlayerDto playerDto) {
+        this.playerDto = playerDto;
     }
 
     public Status fight() {
@@ -50,13 +59,16 @@ public class GameDto {
 
         if(monsterDto != null && monsterDto.getHealth() > 0) {
             while (playerDto.getHealth() > 0 && monsterDto.getHealth() > 0) {
-                monsterDto.setHealth(monsterDto.getHealth() - playerDto.getDamage());
-                playerDto.setHealth(playerDto.getHealth() - monsterDto.getDamage());
+                Random random = new Random();
+                int nb = Math.abs(Math.floorMod(random.nextInt(),6))/5;
+                monsterDto.setHealth(monsterDto.getHealth() - playerDto.getDamage() * nb);
+                playerDto.setHealth(playerDto.getHealth() - monsterDto.getDamage() * nb);
 
                 if(!(playerDto.getHealth() > 0)) return Status.LEVEL_LOST;
                 if(!(monsterDto.getHealth() > 0)) {
                     currentLevelDto.getMap().setMonstersDefeated(currentLevelDto.getMap().getMonstersDefeated() + 1);
                     playerDto.setWeapon(playerDto.getWeapon().getNext());
+                    score += monsterDto.getDamage();
                     return Status.BATTLE_IS_WON;
                 }
             }
@@ -69,7 +81,6 @@ public class GameDto {
         DungeonDto dungeonDto = currentLevelDto.getCurrentDungeon();
         if(dungeonDto.getMonster() != null && dungeonDto.getMonster().getHealth() > 0)
             return Status.NEED_TO_DEFEAT_MONSTER_TO_COLLECT;
-
 
         if(dungeonDto.getHealingPotion() != null)
             playerDto.setHealth(playerDto.getHealth() + dungeonDto.getHealingPotion().getHealingPower());
@@ -87,7 +98,7 @@ public class GameDto {
         MonsterDto monsterDto = currentLevelDto.getCurrentDungeon().getMonster();
 
         if(monsterDto != null && monsterDto.getHealth() > 0) {
-            playerDto.setHealth(playerDto.getHealth() - getCurrentLevel().getFleeDamage());
+            playerDto.setHealth(playerDto.getHealth() - currentLevelDto.getFleeDamage());
             return Status.FLEE_OK;
         }
 

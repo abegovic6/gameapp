@@ -4,6 +4,7 @@ package ba.academy.game.repository.erd;
 import io.smallrye.common.constraint.NotNull;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(schema = "game-schema", name = "MAP")
@@ -32,6 +33,40 @@ public class MapEntity extends AbstractEntity<Integer> {
 
     /** @Relations
      * */
+
+    @OneToOne(mappedBy = "mapEntity", cascade = CascadeType.ALL)
+    private LevelEntity levelEntity;
+
+    public LevelEntity getLevelEntity() {
+        return levelEntity;
+    }
+
+    public void setLevelEntity(LevelEntity levelEntity) {
+        this.levelEntity = levelEntity;
+    }
+
+    @OneToOne
+    @JoinColumn(name = "CURRENT_DUNGEON")
+    private DungeonEntity dungeonEntity;
+
+    public DungeonEntity getDungeonEntity() {
+        return dungeonEntity;
+    }
+
+    public void setDungeonEntity(DungeonEntity dungeonEntity) {
+        this.dungeonEntity = dungeonEntity;
+    }
+
+    @OneToMany(mappedBy = "mapEntity")
+    private Set<DungeonEntity> dungeonEntitySet;
+
+    public Set<DungeonEntity> getDungeonEntitySet() {
+        return dungeonEntitySet;
+    }
+
+    public void setDungeonEntitySet(Set<DungeonEntity> dungeonEntitySet) {
+        this.dungeonEntitySet = dungeonEntitySet;
+    }
 
     /** @Columns
      * */

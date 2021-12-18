@@ -30,6 +30,19 @@ public class MonsterEntity extends AbstractEntity<Integer>{
         this.id = id;
     }
 
+    /** @Relations
+     * */
+    @OneToOne(mappedBy = "monsterEntity", cascade = CascadeType.ALL)
+    private DungeonEntity dungeonEntity;
+
+    public DungeonEntity getDungeonEntity() {
+        return dungeonEntity;
+    }
+
+    public void setDungeonEntity(DungeonEntity dungeonEntity) {
+        this.dungeonEntity = dungeonEntity;
+    }
+
     /** @Columns
      * */
     @NotNull

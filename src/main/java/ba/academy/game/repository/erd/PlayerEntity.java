@@ -33,6 +33,16 @@ public class PlayerEntity extends AbstractEntity<Integer>{
 
     /** @Relations
      * */
+    @OneToOne(mappedBy = "player", cascade = CascadeType.ALL)
+    private GameEntity gameEntity;
+
+    public GameEntity getGameEntity() {
+        return gameEntity;
+    }
+
+    public void setGameEntity(GameEntity gameEntity) {
+        this.gameEntity = gameEntity;
+    }
 
     /** @Columns
      */

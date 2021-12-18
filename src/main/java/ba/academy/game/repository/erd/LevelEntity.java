@@ -32,6 +32,31 @@ public class LevelEntity extends AbstractEntity<Integer>{
 
     /** @Relations
      * */
+    @ManyToOne
+    @JoinColumn(name="GAME_ID", nullable=false)
+    private GameEntity gameEntity;
+
+    public GameEntity getGameEntity() {
+        return gameEntity;
+    }
+
+    public void setGameEntity(GameEntity gameManyToOne) {
+        this.gameEntity = gameManyToOne;
+    }
+
+    @OneToOne
+    @JoinColumn(name = "MAP_ID")
+    private MapEntity mapEntity;
+
+    public MapEntity getMapEntity() {
+        return mapEntity;
+    }
+
+    public void setMapEntity(MapEntity mapEntity) {
+        this.mapEntity = mapEntity;
+    }
+
+
 
     /** @Columns
      * */
