@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
+@Path("/map")
 public class MapResource {
     @Inject
     MapService service;

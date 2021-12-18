@@ -1,36 +1,76 @@
 package ba.academy.game.services;
 
 import ba.academy.game.dto.DungeonDto;
+import ba.academy.game.repository.DungeonRepository;
+import ba.academy.game.repository.MonsterRepository;
+import ba.academy.game.repository.erd.DungeonEntity;
+import ba.academy.game.repository.transformer.DungeonDtoTransformer;
+import ba.academy.game.repository.transformer.MonsterDtoTransformer;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.util.List;
 
 @ApplicationScoped
 @Transactional
 public class DungeonServiceImp implements DungeonService{
+    private final DungeonDtoTransformer dungeonDtoTransformer = new DungeonDtoTransformer();
+
+    @Inject
+    DungeonRepository dungeonRepository;
+
+    @Inject
+    MonsterRepository monsterRepository;
+
+    @ConfigProperty(name = "prefix.message")
+    String prefix;
+
     @Override
     public List<DungeonDto> getAll() {
-        return null;
+        return dungeonDtoTransformer.toDtoList(dungeonRepository.findAllAsList());
     }
 
     @Override
     public DungeonDto getById(Integer id) {
-        return null;
+        return dungeonDtoTransformer.toDto(dungeonRepository.findBy(id));
     }
 
     @Override
     public DungeonDto create(DungeonDto dto) {
-        return null;
+        final DungeonEntity dungeonEntity = dungeonDtoTransformer.toEntity(dto, new DungeonEntity());
+        dungeonEntity.setMonsterEntity(monsterRepository.findBy(dto.getMonster().getId()));
+        dungeonRepository.persist(dungeonEntity);
+        return dungeonDtoTransformer.toDto(dungeonEntity);
     }
 
     @Override
     public DungeonDto deleteById(Integer id) {
+        DungeonEntity entity = dungeonRepository.findBy(id);
+        if(entity != null) {
+            try {
+                dungeonRepository.remove(entity);
+                return dungeonDtoTransformer.toDto(entity);
+            } catch (Exception e) {
+                return null;
+            }
+        }
         return null;
     }
 
     @Override
     public DungeonDto updateById(Integer id, DungeonDto dto) {
-        return null;
+        DungeonEntity entity = dungeonRepository.findBy(id);
+        entity.setPowerUp(dto.getPowerUp());
+        entity.setHealingPotion(dto.getHealingPotion());
+        entity.setMonsterEntity(monsterRepository.findBy(dto.getMonster().getId()));
+
+        try {
+            dungeonRepository.persist(entity);
+            return dungeonDtoTransformer.toDto(entity);
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

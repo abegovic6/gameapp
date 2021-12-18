@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
+@Path("/player")
 public class PlayerResource {
     @Inject
     PlayerService service;
