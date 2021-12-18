@@ -36,14 +36,6 @@ public class PlayerEntity extends AbstractEntity<Integer>{
     @OneToOne(mappedBy = "player", cascade = CascadeType.ALL)
     private GameEntity gameEntity;
 
-    public GameEntity getGameEntity() {
-        return gameEntity;
-    }
-
-    public void setGameEntity(GameEntity gameEntity) {
-        this.gameEntity = gameEntity;
-    }
-
     /** @Columns
      */
     @NotNull
@@ -56,6 +48,18 @@ public class PlayerEntity extends AbstractEntity<Integer>{
 
     public void setHealth(Integer health) {
         this.health = health;
+    }
+
+    @NotNull
+    @Column(name = "HEALTH", nullable = false)
+    private Integer powerUp;
+
+    public Integer getPowerUp() {
+        return powerUp;
+    }
+
+    public void setPowerUp(Integer powerUp) {
+        this.powerUp = powerUp;
     }
 
     @NotNull

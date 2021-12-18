@@ -4,13 +4,24 @@ import ba.academy.game.dto.MonsterDto;
 import ba.academy.game.repository.erd.MonsterEntity;
 
 public class MonsterDtoTransformer implements DtoTransformer<MonsterEntity, MonsterDto>{
+
     @Override
     public MonsterDto toDto(MonsterEntity entity) {
-        return null;
+        if(entity == null)
+            return null;
+        MonsterDto dto = new MonsterDto();
+        dto.setId(entity.getId());
+        dto.setDamage(entity.getDamage());
+        dto.setHealth(entity.getHealth());
+        return dto;
     }
 
     @Override
     public MonsterEntity toEntity(MonsterDto dto, MonsterEntity entityInstance) {
-        return null;
+        if(entityInstance == null)
+            entityInstance = new MonsterEntity();
+        entityInstance.setDamage(dto.getDamage());
+        entityInstance.setHealth(dto.getHealth());
+        return entityInstance;
     }
 }

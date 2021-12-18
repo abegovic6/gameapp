@@ -38,14 +38,6 @@ public class DungeonEntity extends AbstractEntity<Integer>{
     @JoinColumn(name="MAP_ID", nullable=false)
     private MapEntity mapEntity;
 
-    public MapEntity getMapEntity() {
-        return mapEntity;
-    }
-
-    public void setMapEntity(MapEntity mapEntity) {
-        this.mapEntity = mapEntity;
-    }
-
     @OneToOne
     @JoinColumn(name = "MONSTER_ID")
     private MonsterEntity monsterEntity;

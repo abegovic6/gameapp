@@ -8,7 +8,7 @@ public class PlayerDto {
     private Integer id;
     private Integer health;
     private Weapon weapon = Weapon.FIST;
-    private final List<PowerUp> powerUps = new ArrayList<>();
+    private Integer powerUp = 0;
 
     public Integer getId() {
         return id;
@@ -34,19 +34,21 @@ public class PlayerDto {
         this.weapon = weapon;
     }
 
-    public List<PowerUp> getPowerUps() {
-        return powerUps;
+    public Integer getPowerUp() {
+        return powerUp;
+    }
+
+    public void setPowerUp(Integer powerUp) {
+        this.powerUp = powerUp;
     }
 
     public void addPowerUp(PowerUp powerUp) {
-        powerUps.add(powerUp);
+        this.powerUp += powerUp.getScore();
     }
 
     public Integer getDamage() {
-        if(powerUps.isEmpty())
+        if(powerUp == 0)
             return weapon.getPower();
-        AtomicReference<Integer> sum = new AtomicReference<>(0);
-        powerUps.forEach(powerUp -> sum.updateAndGet(v -> v + powerUp.getScore()));
-        return weapon.getPower() * sum.get() / powerUps.size();
+        return weapon.getPower() + powerUp;
     }
 }
