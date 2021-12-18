@@ -1,16 +1,15 @@
 package ba.academy.game;
 
-import ba.academy.game.dto.GameDto;
-import ba.academy.game.services.GameService;
+import ba.academy.game.dto.LevelDto;
+import ba.academy.game.services.LevelService;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
-public class GameResource {
-
+public class LevelResource {
     @Inject
-    GameService service;
+    LevelService service;
 
     @GET
     @Produces(value = MediaType.APPLICATION_JSON)
@@ -38,7 +37,7 @@ public class GameResource {
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces(value = MediaType.APPLICATION_JSON)
-    public Response create(GameDto dtoAtribute, @Context UriInfo uriInfo)
+    public Response create(LevelDto dtoAtribute, @Context UriInfo uriInfo)
     {
         var dto = service.create(dtoAtribute);
         if(dto != null) {
@@ -65,7 +64,7 @@ public class GameResource {
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces(value = MediaType.APPLICATION_JSON)
-    public Response updateDiary(GameDto dtoAtribute, @PathParam("id") int id, @Context UriInfo uriInfo) {
+    public Response updateDiary(LevelDto dtoAtribute, @PathParam("id") int id, @Context UriInfo uriInfo) {
         var updateDiaryDto = service.updateById(id, dtoAtribute);
         if(updateDiaryDto != null) {
             UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
