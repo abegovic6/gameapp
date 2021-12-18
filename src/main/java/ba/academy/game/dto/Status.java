@@ -1,0 +1,25 @@
+package ba.academy.game.dto;
+
+public enum Status {
+    LAST_DUNGEON_CANT_MOVE,
+    FIRST_DUNGEON_CANT_MOVE,
+    DUNGEON_MOVE_OK,
+
+    BATTLE_IS_WON,
+
+    NO_MONSTER_TO_FIGHT,
+
+    NEED_TO_DEFEAT_MONSTER_TO_COLLECT,
+    COLLECT_OK,
+
+    FLEE_OK,
+    NO_MONSTER_TO_FLEE,
+
+    NEED_TO_FLEE_OR_FIGHT,
+
+    LEVEL_LOST,
+    LEVEL_WON,
+
+    GAME_WON,
+    LEVEL_MOVE_OK
+}
