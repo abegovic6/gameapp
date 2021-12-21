@@ -55,6 +55,15 @@ public class PlayerServiceImp implements PlayerService{
 
     @Override
     public PlayerDto updateById(Integer id, PlayerDto dto) {
-        return null;
+        try {
+            PlayerEntity playerEntity = playerRepository.findBy(id);
+            playerEntity.setHealth(dto.getHealth());
+            playerEntity.setPowerUp(dto.getPowerUp());
+            playerEntity.setWeapon(dto.getWeapon());
+            playerRepository.persist(playerEntity);
+            return playerDtoTransformer.toDto(playerEntity);
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

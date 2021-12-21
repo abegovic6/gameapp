@@ -77,9 +77,14 @@ public class GameServiceImp implements GameService{
     }
 
     private GameDto getGameDto(GameDto dto, GameEntity gameEntity) {
-        gameEntity.setPlayer(playerRepository.findBy(dto.getPlayerDto().getId()));
-        gameEntity.setCurrentLevel(levelRepository.findBy(dto.getCurrentLevelDto().getId()));
-
+        if(dto.getPlayerDto() != null)
+            gameEntity.setPlayer(playerRepository.findBy(dto.getPlayerDto().getId()));
+        else
+            gameEntity.setPlayer(null);
+        if(dto.getCurrentLevelDto() != null)
+            gameEntity.setCurrentLevel(levelRepository.findBy(dto.getCurrentLevelDto().getId()));
+        else
+            gameEntity.setCurrentLevel(null);
         Set<LevelEntity> levelEntities = new HashSet<>();
         for(LevelDto levelDto : dto.getLevelDtos())
             levelEntities.add(levelRepository.findBy(levelDto.getId()));

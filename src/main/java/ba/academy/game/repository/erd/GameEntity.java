@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(schema = "game-schema", name = "GAME")
+@Table(schema = "games", name = "GAME")
 public class GameEntity extends AbstractEntity<Integer> {
 
     /** @Id
@@ -14,7 +14,7 @@ public class GameEntity extends AbstractEntity<Integer> {
     @SequenceGenerator(
             name = "gameSeq",
             sequenceName = "GAME_SEQ",
-            schema = "game-schema",
+            schema = "games",
             allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gameSeq")
     @Id
@@ -44,6 +44,8 @@ public class GameEntity extends AbstractEntity<Integer> {
         this.player = playerEntity;
     }
 
+
+    // This is null at first
     @OneToOne
     @JoinColumn(name = "CURRENT_LEVEL")
     private LevelEntity currentLevel;
@@ -56,6 +58,7 @@ public class GameEntity extends AbstractEntity<Integer> {
         this.currentLevel = levelEntity;
     }
 
+    // this is not a column in game
     @OneToMany(mappedBy = "gameEntity")
     private Set<LevelEntity> levels;
 

@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(schema = "game-schema", name = "MAP")
+@Table(schema = "games", name = "MAP")
 public class MapEntity extends AbstractEntity<Integer> {
 
     /** @Id
@@ -15,7 +15,7 @@ public class MapEntity extends AbstractEntity<Integer> {
     @SequenceGenerator(
             name = "mapSeq",
             sequenceName = "MAP_SEQ",
-            schema = "game-schema",
+            schema = "games",
             allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mapSeq")
     @Id

@@ -6,7 +6,7 @@ import io.smallrye.common.constraint.NotNull;
 import javax.persistence.*;
 
 @Entity
-@Table(schema = "game-schema", name = "LEVEL")
+@Table(schema = "games", name = "LEVEL")
 public class LevelEntity extends AbstractEntity<Integer>{
 
     /** ID
@@ -14,7 +14,7 @@ public class LevelEntity extends AbstractEntity<Integer>{
     @SequenceGenerator(
             name = "levelSeq",
             sequenceName = "LEVEL_SEQ",
-            schema = "game-schema",
+            schema = "games",
             allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "levelSeq")
     @Id

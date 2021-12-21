@@ -12,7 +12,6 @@ public class LevelDtoTransformer implements DtoTransformer<LevelEntity, LevelDto
         LevelDto dto = new LevelDto();
         dto.setId(entity.getId());
         dto.setLevelNumber(entity.getLevelNumber());
-        dto.setMap(mapDtoTransformer.toDto(entity.getMapEntity()));
         return dto;
     }
 

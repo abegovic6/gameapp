@@ -58,7 +58,7 @@ public class MonsterServiceImp implements MonsterService{
         try {
             MonsterEntity monsterEntity = monsterRepository.findBy(id);
             monsterEntity.setHealth(dto.getHealth());
-            monsterEntity.setDamage(dto.getHealth());
+            monsterEntity.setDamage(dto.getDamage());
             monsterRepository.persist(monsterEntity);
             return monsterDtoTransformer.toDto(monsterEntity);
         } catch (Exception e) {

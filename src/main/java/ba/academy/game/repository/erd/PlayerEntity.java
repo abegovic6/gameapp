@@ -7,7 +7,7 @@ import io.smallrye.common.constraint.NotNull;
 import javax.persistence.*;
 
 @Entity
-@Table(schema = "game-schema", name = "PLAYER")
+@Table(schema = "games", name = "PLAYER")
 public class PlayerEntity extends AbstractEntity<Integer>{
 
     /** @Id
@@ -15,7 +15,7 @@ public class PlayerEntity extends AbstractEntity<Integer>{
     @SequenceGenerator(
             name = "playerSeq",
             sequenceName = "PLAYER_SEQ",
-            schema = "game-schema",
+            schema = "games",
             allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "playerSeq")
     @Id
@@ -51,7 +51,7 @@ public class PlayerEntity extends AbstractEntity<Integer>{
     }
 
     @NotNull
-    @Column(name = "HEALTH", nullable = false)
+    @Column(name = "POWER_UP", nullable = false)
     private Integer powerUp;
 
     public Integer getPowerUp() {

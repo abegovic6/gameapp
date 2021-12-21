@@ -4,6 +4,7 @@ public class LevelDto {
     private Integer id;
 
     private Integer levelNumber;
+
     private MapDto mapDto;
 
 

@@ -7,7 +7,7 @@ import ba.academy.game.dto.PowerUp;
 import javax.persistence.*;
 
 @Entity
-@Table(schema = "game-schema", name = "DUNGEON")
+@Table(schema = "games", name = "DUNGEON")
 public class DungeonEntity extends AbstractEntity<Integer>{
 
     /** @Id
@@ -15,7 +15,7 @@ public class DungeonEntity extends AbstractEntity<Integer>{
     @SequenceGenerator(
             name = "dungeonSeq",
             sequenceName = "DUNGEON_SEQ",
-            schema = "game-schema",
+            schema = "games",
             allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "dungeonSeq")
     @Id
@@ -35,7 +35,7 @@ public class DungeonEntity extends AbstractEntity<Integer>{
     /** @Relations
      * */
     @ManyToOne
-    @JoinColumn(name="MAP_ID", nullable=false)
+    @JoinColumn(name="MAP_ID", nullable = true)
     private MapEntity mapEntity;
 
     @OneToOne

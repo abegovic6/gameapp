@@ -40,7 +40,10 @@ public class DungeonServiceImp implements DungeonService{
     @Override
     public DungeonDto create(DungeonDto dto) {
         final DungeonEntity dungeonEntity = dungeonDtoTransformer.toEntity(dto, new DungeonEntity());
-        dungeonEntity.setMonsterEntity(monsterRepository.findBy(dto.getMonster().getId()));
+        if(dto.getMonster() != null)
+            dungeonEntity.setMonsterEntity(monsterRepository.findBy(dto.getMonster().getId()));
+        else
+            dungeonEntity.setMonsterEntity(null);
         dungeonRepository.persist(dungeonEntity);
         return dungeonDtoTransformer.toDto(dungeonEntity);
     }
@@ -64,7 +67,10 @@ public class DungeonServiceImp implements DungeonService{
         DungeonEntity entity = dungeonRepository.findBy(id);
         entity.setPowerUp(dto.getPowerUp());
         entity.setHealingPotion(dto.getHealingPotion());
-        entity.setMonsterEntity(monsterRepository.findBy(dto.getMonster().getId()));
+        if(dto.getMonster() != null)
+            entity.setMonsterEntity(monsterRepository.findBy(dto.getMonster().getId()));
+        else
+            entity.setMonsterEntity(null);
 
         try {
             dungeonRepository.persist(entity);

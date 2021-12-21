@@ -11,7 +11,11 @@ public class DungeonDtoTransformer implements DtoTransformer<DungeonEntity, Dung
         DungeonDto dto = new DungeonDto();
         dto.setId(entity.getId());
         dto.setHealingPotion(entity.getHealingPotion());
-        dto.setMonster(monsterDtoTransformer.toDto(entity.getMonsterEntity()));
+        if(entity.getMonsterEntity() != null)
+            dto.setMonster(monsterDtoTransformer.toDto(entity.getMonsterEntity()));
+        else {
+            entity.setMonsterEntity(null);
+        }
         dto.setPowerUp(entity.getPowerUp());
 
         return dto;
