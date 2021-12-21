@@ -72,7 +72,10 @@ public class MapServiceImp implements MapService{
     }
 
     private MapDto getMapDto(MapDto dto, MapEntity mapEntity) {
-        mapEntity.setDungeonEntity(dungeonRepository.findBy(dto.getCurrentDungeon().getId()));
+        if(dto.getCurrentDungeon() != null)
+            mapEntity.setDungeonEntity(dungeonRepository.findBy(dto.getCurrentDungeon().getId()));
+        else
+            mapEntity.setDungeonEntity(null);
         Set<DungeonEntity> dungeonEntitySet = new HashSet<>();
         for(var dungeonDto : dto.getDungeons())
             dungeonEntitySet.add(dungeonRepository.findBy(dungeonDto.getId()));

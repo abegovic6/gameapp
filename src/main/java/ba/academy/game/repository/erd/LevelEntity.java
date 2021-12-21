@@ -33,7 +33,7 @@ public class LevelEntity extends AbstractEntity<Integer>{
     /** @Relations
      * */
     @ManyToOne
-    @JoinColumn(name="GAME_ID", nullable=false)
+    @JoinColumn(name="GAME_ID")
     private GameEntity gameEntity;
 
     public GameEntity getGameEntity() {

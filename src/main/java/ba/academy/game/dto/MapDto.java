@@ -7,7 +7,7 @@ public class MapDto {
     private Integer id;
 
     private LinkedList<DungeonDto> dungeonDtos = new LinkedList<>();
-    private DungeonDto currentDungeonDto;
+    private DungeonDto currentDungeon;
 
     private Integer monstersDefeated = 0;
 
@@ -28,11 +28,11 @@ public class MapDto {
     }
 
     public DungeonDto getCurrentDungeon() {
-        return currentDungeonDto;
+        return currentDungeon;
     }
 
     public void setCurrentDungeon(DungeonDto currentDungeonDto) {
-        this.currentDungeonDto = currentDungeonDto;
+        this.currentDungeon = currentDungeonDto;
     }
 
     public Integer getMonstersDefeated() {
@@ -43,25 +43,25 @@ public class MapDto {
         this.monstersDefeated = monstersDefeated;
     }
 
-    public boolean isOrbOfQuarkus() {
-        return dungeonDtos.getLast().equals(currentDungeonDto);
+    public boolean lastLevel() {
+        return dungeonDtos.getLast().equals(currentDungeon);
     }
 
     public Status moveNext() {
-        int index = dungeonDtos.indexOf(currentDungeonDto);
+        int index = dungeonDtos.indexOf(currentDungeon);
         if(index == dungeonDtos.size() - 1) {
             return Status.LAST_DUNGEON_CANT_MOVE;
         }
-        currentDungeonDto = dungeonDtos.get(index + 1);
+        currentDungeon = dungeonDtos.get(index + 1);
         return Status.DUNGEON_MOVE_OK;
     }
 
     public Status moveBack() {
-        int index = dungeonDtos.indexOf(currentDungeonDto);
+        int index = dungeonDtos.indexOf(currentDungeon);
         if(index == 0) {
             return Status.FIRST_DUNGEON_CANT_MOVE;
         }
-        currentDungeonDto = dungeonDtos.get(index - 1);
+        currentDungeon = dungeonDtos.get(index - 1);
         return Status.DUNGEON_MOVE_OK;
     }
 }

@@ -39,7 +39,10 @@ public class LevelServiceImp implements LevelService{
     @Override
     public LevelDto create(LevelDto dto) {
         LevelEntity levelEntity = levelDtoTransformer.toEntity(dto, new LevelEntity());
-        levelEntity.setMapEntity(mapRepository.findBy(dto.getMap().getId()));
+        if(dto.getMap() != null)
+            levelEntity.setMapEntity(mapRepository.findBy(dto.getMap().getId()));
+        else
+            levelEntity.setMapEntity(null);
         levelRepository.persist(levelEntity);
         return levelDtoTransformer.toDto(levelEntity);
     }
@@ -63,7 +66,10 @@ public class LevelServiceImp implements LevelService{
         try {
             LevelEntity levelEntity = levelRepository.findBy(id);
             levelEntity.setLevelNumber(dto.getLevelNumber());
-            levelEntity.setMapEntity(mapRepository.findBy(dto.getMap().getId()));
+            if(dto.getMap() != null)
+                levelEntity.setMapEntity(mapRepository.findBy(dto.getMap().getId()));
+            else
+                levelEntity.setMapEntity(null);
             levelRepository.persist(levelEntity);
             return levelDtoTransformer.toDto(levelEntity);
         } catch (Exception e) {

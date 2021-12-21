@@ -5,7 +5,7 @@ public class LevelDto {
 
     private Integer levelNumber;
 
-    private MapDto mapDto;
+    private MapDto map;
 
 
     public Integer getId() {
@@ -17,11 +17,11 @@ public class LevelDto {
     }
 
     public MapDto getMap() {
-        return mapDto;
+        return map;
     }
 
     public void setMap(MapDto mapDto) {
-        this.mapDto = mapDto;
+        this.map = mapDto;
     }
 
     public Integer getLevelNumber() {
@@ -33,14 +33,18 @@ public class LevelDto {
     }
 
     public Integer getScore() {
-        return mapDto.getMonstersDefeated() * levelNumber;
+        if(map == null)
+            return 0;
+        return map.getMonstersDefeated() * levelNumber;
     }
 
     public DungeonDto getCurrentDungeon() {
-        return mapDto.getCurrentDungeon();
+        if(map == null) return null;
+        return map.getCurrentDungeon();
     }
 
     public Integer getFleeDamage() {
-        return mapDto.getCurrentDungeon().getFleeDamage();
+        if(map == null) return 0;
+        return map.getCurrentDungeon().getFleeDamage();
     }
 }

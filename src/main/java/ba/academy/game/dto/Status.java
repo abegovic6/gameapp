@@ -21,5 +21,7 @@ public enum Status {
     LEVEL_WON,
 
     GAME_WON,
-    LEVEL_MOVE_OK
+    LEVEL_MOVE_OK,
+
+    NULL_POINTER
 }

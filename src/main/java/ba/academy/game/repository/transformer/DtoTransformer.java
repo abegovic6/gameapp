@@ -2,6 +2,7 @@ package ba.academy.game.repository.transformer;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 public interface DtoTransformer <E,D> {
@@ -12,7 +13,7 @@ public interface DtoTransformer <E,D> {
     public E toEntity(D dto, E entityInstance);
 
     default List<D> toDtoList(Collection<E> resultEntities) {
-        List<D> result = new ArrayList<>();
+        List<D> result = new LinkedList<>();
 
         for (E entity : resultEntities) {
             result.add(toDto(entity));

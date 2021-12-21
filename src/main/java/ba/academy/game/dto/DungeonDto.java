@@ -6,7 +6,7 @@ import java.util.Random;
 public class DungeonDto {
     private Integer id;
 
-    private MonsterDto monsterDto;
+    private MonsterDto monster;
     private PowerUp powerUp;
     private HealingPotion healingPotion;
 
@@ -19,11 +19,11 @@ public class DungeonDto {
     }
 
     public MonsterDto getMonster() {
-        return monsterDto;
+        return monster;
     }
 
     public void setMonster(MonsterDto monsterDto) {
-        this.monsterDto = monsterDto;
+        this.monster = monsterDto;
     }
 
     public PowerUp getPowerUp() {
