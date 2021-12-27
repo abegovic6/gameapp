@@ -6,8 +6,10 @@ import java.util.LinkedList;
 public class MapDto {
     private Integer id;
 
-    private LinkedList<DungeonDto> dungeonDtos = new LinkedList<>();
-    private DungeonDto currentDungeon;
+    private LinkedList<DungeonDto> dungeons = new LinkedList<>();
+    private Integer currentDungeonId = -1;
+
+    private Integer levelId;
 
     private Integer monstersDefeated = 0;
 
@@ -20,19 +22,30 @@ public class MapDto {
     }
 
     public LinkedList<DungeonDto> getDungeons() {
-        return dungeonDtos;
+        return dungeons;
     }
 
     public void setDungeons(LinkedList<DungeonDto> dungeonDtos) {
-        this.dungeonDtos = dungeonDtos;
+        this.dungeons = dungeonDtos;
     }
 
-    public DungeonDto getCurrentDungeon() {
-        return currentDungeon;
+    public Integer getCurrentDungeonId() {
+        return currentDungeonId;
     }
 
-    public void setCurrentDungeon(DungeonDto currentDungeonDto) {
-        this.currentDungeon = currentDungeonDto;
+    public void setCurrentDungeonId(Integer currentDungeonDto) {
+        this.currentDungeonId = currentDungeonDto;
+    }
+
+    public DungeonDto findCurrentDungeon() {
+        if(currentDungeonId == -1) return null;
+
+        for(var dungeon : dungeons) {
+            if(currentDungeonId.equals(dungeon.getId()))
+                return dungeon;
+        }
+
+        return null;
     }
 
     public Integer getMonstersDefeated() {
@@ -44,24 +57,32 @@ public class MapDto {
     }
 
     public boolean lastLevel() {
-        return dungeonDtos.getLast().equals(currentDungeon);
+        return dungeons.getLast().getId().equals(currentDungeonId);
+    }
+
+    public Integer getLevelId() {
+        return levelId;
+    }
+
+    public void setLevelId(Integer levelId) {
+        this.levelId = levelId;
     }
 
     public Status moveNext() {
-        int index = dungeonDtos.indexOf(currentDungeon);
-        if(index == dungeonDtos.size() - 1) {
+        int index = dungeons.indexOf(findCurrentDungeon());
+        if(index == dungeons.size() - 1) {
             return Status.LAST_DUNGEON_CANT_MOVE;
         }
-        currentDungeon = dungeonDtos.get(index + 1);
+        currentDungeonId = dungeons.get(index + 1).getId();
         return Status.DUNGEON_MOVE_OK;
     }
 
     public Status moveBack() {
-        int index = dungeonDtos.indexOf(currentDungeon);
-        if(index == 0) {
+        int index = dungeons.indexOf(findCurrentDungeon());
+        if(index == 0 ) {
             return Status.FIRST_DUNGEON_CANT_MOVE;
         }
-        currentDungeon = dungeonDtos.get(index - 1);
+        currentDungeonId = index - 1;
         return Status.DUNGEON_MOVE_OK;
     }
 }

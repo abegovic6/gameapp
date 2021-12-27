@@ -35,8 +35,16 @@ public class DungeonEntity extends AbstractEntity<Integer>{
     /** @Relations
      * */
     @ManyToOne
-    @JoinColumn(name="MAP_ID", nullable = true)
+    @JoinColumn(name="MAP_ID")
     private MapEntity mapEntity;
+
+    public MapEntity getMapEntity() {
+        return mapEntity;
+    }
+
+    public void setMapEntity(MapEntity mapEntity) {
+        this.mapEntity = mapEntity;
+    }
 
     @OneToOne
     @JoinColumn(name = "MONSTER_ID")

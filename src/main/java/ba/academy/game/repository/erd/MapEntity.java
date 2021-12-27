@@ -22,6 +22,9 @@ public class MapEntity extends AbstractEntity<Integer> {
     @Column(name = "ID", nullable = false)
     private Integer id;
 
+    public MapEntity() {
+    }
+
     @Override
     public Integer getId() {
         return id;
@@ -33,29 +36,6 @@ public class MapEntity extends AbstractEntity<Integer> {
 
     /** @Relations
      * */
-
-    @OneToOne(mappedBy = "mapEntity", cascade = CascadeType.ALL)
-    private LevelEntity levelEntity;
-
-    public LevelEntity getLevelEntity() {
-        return levelEntity;
-    }
-
-    public void setLevelEntity(LevelEntity levelEntity) {
-        this.levelEntity = levelEntity;
-    }
-
-    @OneToOne
-    @JoinColumn(name = "CURRENT_DUNGEON")
-    private DungeonEntity dungeonEntity;
-
-    public DungeonEntity getDungeonEntity() {
-        return dungeonEntity;
-    }
-
-    public void setDungeonEntity(DungeonEntity dungeonEntity) {
-        this.dungeonEntity = dungeonEntity;
-    }
 
     @OneToMany(mappedBy = "mapEntity")
     private Set<DungeonEntity> dungeonEntitySet;
@@ -71,10 +51,20 @@ public class MapEntity extends AbstractEntity<Integer> {
     /** @Columns
      * */
     @NotNull
+    @Column(name = "CURRENT_DUNGEON", nullable = false)
+    private Integer currentDungeon;
+
+    public Integer getCurrentDungeon() {
+        return currentDungeon;
+    }
+
+    public void setCurrentDungeon(Integer currentDungeon) {
+        this.currentDungeon = currentDungeon;
+    }
+
+    @NotNull
     @Column(name = "DEFEATED_MONSTERS", nullable = false)
     private Integer defeatedMonsters;
-
-
 
     public Integer getDefeatedMonsters() {
         return defeatedMonsters;
@@ -82,5 +72,17 @@ public class MapEntity extends AbstractEntity<Integer> {
 
     public void setDefeatedMonsters(Integer defeatedMonsters) {
         this.defeatedMonsters = defeatedMonsters;
+    }
+
+    @NotNull
+    @Column(name = "LEVEL_ID")
+    private Integer levelId;
+
+    public Integer getLevelId() {
+        return levelId;
+    }
+
+    public void setLevelId(Integer levelId) {
+        this.levelId = levelId;
     }
 }

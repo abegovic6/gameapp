@@ -1,13 +1,11 @@
 package ba.academy.game.services;
 
-import ba.academy.game.dto.GameDto;
-import ba.academy.game.dto.LevelDto;
+import ba.academy.game.dto.*;
 import ba.academy.game.repository.GameRepository;
 import ba.academy.game.repository.LevelRepository;
 import ba.academy.game.repository.PlayerRepository;
 import ba.academy.game.repository.erd.GameEntity;
 import ba.academy.game.repository.erd.LevelEntity;
-import ba.academy.game.repository.transformer.DungeonDtoTransformer;
 import ba.academy.game.repository.transformer.GameDtoTransformer;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
@@ -31,6 +29,21 @@ public class GameServiceImp implements GameService{
 
     @Inject
     PlayerRepository playerRepository;
+
+    @Inject
+    PlayerService playerService;
+
+    @Inject
+    MonsterService monsterService;
+
+    @Inject
+    LevelService levelService;
+
+    @Inject
+    MapService mapService;
+
+    @Inject
+    DungeonService dungeonService;
 
     @ConfigProperty(name = "prefix.message")
     String prefix;
@@ -76,15 +89,49 @@ public class GameServiceImp implements GameService{
         }
     }
 
+    @Override
+    public Status move(Integer id) {
+        var gameDto = getById(id);
+        var status = gameDto.move();
+        gameDto.setStatus(status.getReasonPhrase());
+        updateAll(gameDto);
+        return status;
+    }
+
+    @Override
+    public Status fight(Integer id) {
+        var gameDto = getById(id);
+        var status = gameDto.fight();
+        gameDto.setStatus(status.getReasonPhrase());
+        updateAll(gameDto);
+        return status;
+    }
+
+    @Override
+    public Status flee(Integer id) {
+        var gameDto = getById(id);
+        var status = gameDto.flee();
+        gameDto.setStatus(status.getReasonPhrase());
+        updateAll(gameDto);
+        return status;
+    }
+
+    @Override
+    public Status collect(Integer id) {
+        var gameDto = getById(id);
+        var status = gameDto.collect();
+        gameDto.setStatus(status.getReasonPhrase());
+        updateAll(gameDto);
+        return status;
+    }
+
     private GameDto getGameDto(GameDto dto, GameEntity gameEntity) {
-        if(dto.getPlayerDto() != null)
-            gameEntity.setPlayer(playerRepository.findBy(dto.getPlayerDto().getId()));
+        if(dto.getPlayer() != null)
+            gameEntity.setPlayer(playerRepository.findBy(dto.getPlayer().getId()));
         else
             gameEntity.setPlayer(null);
-        if(dto.getCurrentLevelDto() != null)
-            gameEntity.setCurrentLevel(levelRepository.findBy(dto.getCurrentLevelDto().getId()));
-        else
-            gameEntity.setCurrentLevel(null);
+        gameEntity.setStatus(dto.getStatus());
+        gameEntity.setCurrentLevel(dto.getCurrentLevelId());
         Set<LevelEntity> levelEntities = new HashSet<>();
         for(LevelDto levelDto : dto.getLevelDtos())
             levelEntities.add(levelRepository.findBy(levelDto.getId()));
@@ -92,5 +139,32 @@ public class GameServiceImp implements GameService{
 
         gameRepository.persist(gameEntity);
         return gameDtoTransformer.toDto(gameEntity);
+    }
+
+    private void updateAll(GameDto game) {
+        LevelDto level = game.findCurrentLevel();
+        updateLevel(level);
+
+        for(var l : game.getLevelDtos())
+            updateLevel(l);
+
+        updateById(game.getId(), game);
+    }
+
+    private void updateLevel(LevelDto level) {
+        if(level != null) {
+            MapDto map = level.getMap();
+            if (map != null) {
+                for (var dungeon : map.getDungeons()) {
+                    MonsterDto monsterDto = dungeon.getMonster();
+                    if (monsterDto != null) {
+                        monsterService.updateById(monsterDto.getId(), monsterDto);
+                    }
+                    dungeonService.updateById(dungeon.getId(), dungeon);
+                }
+                mapService.updateById(map.getId(), map);
+            }
+            levelService.updateById(level.getId(), level);
+        }
     }
 }

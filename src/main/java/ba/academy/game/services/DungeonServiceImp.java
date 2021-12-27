@@ -2,10 +2,10 @@ package ba.academy.game.services;
 
 import ba.academy.game.dto.DungeonDto;
 import ba.academy.game.repository.DungeonRepository;
+import ba.academy.game.repository.MapRepository;
 import ba.academy.game.repository.MonsterRepository;
 import ba.academy.game.repository.erd.DungeonEntity;
 import ba.academy.game.repository.transformer.DungeonDtoTransformer;
-import ba.academy.game.repository.transformer.MonsterDtoTransformer;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -23,6 +23,9 @@ public class DungeonServiceImp implements DungeonService{
 
     @Inject
     MonsterRepository monsterRepository;
+
+    @Inject
+    MapRepository mapRepository;
 
     @ConfigProperty(name = "prefix.message")
     String prefix;
@@ -44,6 +47,10 @@ public class DungeonServiceImp implements DungeonService{
             dungeonEntity.setMonsterEntity(monsterRepository.findBy(dto.getMonster().getId()));
         else
             dungeonEntity.setMonsterEntity(null);
+        if(dto.getMapId() != null)
+            dungeonEntity.setMapEntity(mapRepository.findBy(dto.getMapId()));
+        else
+            dungeonEntity.setMapEntity(null);
         dungeonRepository.persist(dungeonEntity);
         return dungeonDtoTransformer.toDto(dungeonEntity);
     }
@@ -71,7 +78,10 @@ public class DungeonServiceImp implements DungeonService{
             entity.setMonsterEntity(monsterRepository.findBy(dto.getMonster().getId()));
         else
             entity.setMonsterEntity(null);
-
+        if(dto.getMapId() != null)
+            entity.setMapEntity(mapRepository.findBy(dto.getMapId()));
+        else
+            entity.setMapEntity(null);
         try {
             dungeonRepository.persist(entity);
             return dungeonDtoTransformer.toDto(entity);

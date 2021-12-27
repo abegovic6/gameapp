@@ -57,7 +57,6 @@ public class LevelEntity extends AbstractEntity<Integer>{
     }
 
 
-
     /** @Columns
      * */
     @NotNull

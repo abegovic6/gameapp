@@ -17,16 +17,17 @@ public class GameDtoTransformer implements DtoTransformer<GameEntity, GameDto>{
 
         dto.setId(entity.getId());
         dto.setScore(entity.getScore());
-        if(entity.getCurrentLevel() != null)
-            dto.setCurrentLevelDto(levelDtoTransformer.toDto(entity.getCurrentLevel()));
+        dto.setCurrentLevelId(entity.getCurrentLevel());
+        dto.setStatus(entity.getStatus());
+        if(entity.getPlayer() != null) {
+            dto.setPlayer(playerDtoTransformer.toDto(entity.getPlayer()));
+        }
         else
-            dto.setCurrentLevelDto(null);
-        if(entity.getPlayer() != null)
-            dto.setPlayerDto(playerDtoTransformer.toDto(entity.getPlayer()));
-        else
-            dto.setPlayerDto(null);
-        dto.setLevelDtos((LinkedList<LevelDto>) levelDtoTransformer.toDtoList(entity.getLevels()));
-
+            dto.setPlayer(null);
+        dto.setLevelDtos((LinkedList<LevelDto>)
+                levelDtoTransformer.toDtoList(entity.getLevels()));
+        for(var level : dto.getLevelDtos())
+            level.setGameId(dto.getId());
         return dto;
     }
 
@@ -35,6 +36,8 @@ public class GameDtoTransformer implements DtoTransformer<GameEntity, GameDto>{
         if(entityInstance == null)
             entityInstance = new GameEntity();
         entityInstance.setScore(dto.getScore());
+        entityInstance.setCurrentLevel(dto.getCurrentLevelId());
+        entityInstance.setStatus(dto.getStatus());
         return entityInstance;
     }
 }

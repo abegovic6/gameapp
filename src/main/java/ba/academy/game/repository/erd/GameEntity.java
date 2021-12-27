@@ -33,7 +33,7 @@ public class GameEntity extends AbstractEntity<Integer> {
     /** @Relations
      * */
     @OneToOne
-    @JoinColumn(name = "PLAYER_ID")
+    @JoinColumn(name = "PLAYER_ID", nullable = false)
     private PlayerEntity player;
 
     public PlayerEntity getPlayer() {
@@ -44,19 +44,6 @@ public class GameEntity extends AbstractEntity<Integer> {
         this.player = playerEntity;
     }
 
-
-    // This is null at first
-    @OneToOne
-    @JoinColumn(name = "CURRENT_LEVEL")
-    private LevelEntity currentLevel;
-
-    public LevelEntity getCurrentLevel() {
-        return currentLevel;
-    }
-
-    public void setCurrentLevel(LevelEntity levelEntity) {
-        this.currentLevel = levelEntity;
-    }
 
     // this is not a column in game
     @OneToMany(mappedBy = "gameEntity")
@@ -82,5 +69,29 @@ public class GameEntity extends AbstractEntity<Integer> {
 
     public void setScore(Integer score) {
         this.score = score;
+    }
+
+    @NotNull
+    @Column(name = "CURRENT_LEVEL")
+    private Integer currentLevel;
+
+    public Integer getCurrentLevel() {
+        return currentLevel;
+    }
+
+    public void setCurrentLevel(Integer currentLevel) {
+        this.currentLevel = currentLevel;
+    }
+
+    @NotNull
+    @Column(name = "STATUS")
+    private String status;
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getStatus() {
+        return status;
     }
 }

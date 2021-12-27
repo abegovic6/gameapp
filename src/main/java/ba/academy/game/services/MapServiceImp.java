@@ -2,6 +2,7 @@ package ba.academy.game.services;
 
 import ba.academy.game.dto.MapDto;
 import ba.academy.game.repository.DungeonRepository;
+import ba.academy.game.repository.LevelRepository;
 import ba.academy.game.repository.MapRepository;
 import ba.academy.game.repository.erd.DungeonEntity;
 import ba.academy.game.repository.erd.MapEntity;
@@ -25,6 +26,9 @@ public class MapServiceImp implements MapService{
 
     @Inject
     DungeonRepository dungeonRepository;
+
+    @Inject
+    LevelRepository levelRepository;
 
     @ConfigProperty(name = "prefix.message")
     String prefix;
@@ -72,10 +76,8 @@ public class MapServiceImp implements MapService{
     }
 
     private MapDto getMapDto(MapDto dto, MapEntity mapEntity) {
-        if(dto.getCurrentDungeon() != null)
-            mapEntity.setDungeonEntity(dungeonRepository.findBy(dto.getCurrentDungeon().getId()));
-        else
-            mapEntity.setDungeonEntity(null);
+        mapEntity.setCurrentDungeon(dto.getCurrentDungeonId());
+        mapEntity.setLevelId(dto.getLevelId());
         Set<DungeonEntity> dungeonEntitySet = new HashSet<>();
         for(var dungeonDto : dto.getDungeons())
             dungeonEntitySet.add(dungeonRepository.findBy(dungeonDto.getId()));

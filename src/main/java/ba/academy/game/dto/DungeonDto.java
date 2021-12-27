@@ -10,6 +10,8 @@ public class DungeonDto {
     private PowerUp powerUp;
     private HealingPotion healingPotion;
 
+    private Integer mapId;
+
     public Integer getId() {
         return id;
     }
@@ -40,6 +42,14 @@ public class DungeonDto {
 
     public void setHealingPotion(HealingPotion healingPotion) {
         this.healingPotion = healingPotion;
+    }
+
+    public Integer getMapId() {
+        return mapId;
+    }
+
+    public void setMapId(Integer mapId) {
+        this.mapId = mapId;
     }
 
     public Integer getFleeDamage() {

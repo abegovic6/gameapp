@@ -1,6 +1,7 @@
 package ba.academy.game.services;
 
 import ba.academy.game.dto.LevelDto;
+import ba.academy.game.repository.GameRepository;
 import ba.academy.game.repository.LevelRepository;
 import ba.academy.game.repository.MapRepository;
 import ba.academy.game.repository.erd.LevelEntity;
@@ -23,6 +24,9 @@ public class LevelServiceImp implements LevelService{
     @Inject
     MapRepository mapRepository;
 
+    @Inject
+    GameRepository gameRepository;
+
     @ConfigProperty(name = "prefix.message")
     String prefix;
 
@@ -39,12 +43,7 @@ public class LevelServiceImp implements LevelService{
     @Override
     public LevelDto create(LevelDto dto) {
         LevelEntity levelEntity = levelDtoTransformer.toEntity(dto, new LevelEntity());
-        if(dto.getMap() != null)
-            levelEntity.setMapEntity(mapRepository.findBy(dto.getMap().getId()));
-        else
-            levelEntity.setMapEntity(null);
-        levelRepository.persist(levelEntity);
-        return levelDtoTransformer.toDto(levelEntity);
+        return getLevelDto(dto, levelEntity);
     }
 
     @Override
@@ -66,14 +65,22 @@ public class LevelServiceImp implements LevelService{
         try {
             LevelEntity levelEntity = levelRepository.findBy(id);
             levelEntity.setLevelNumber(dto.getLevelNumber());
-            if(dto.getMap() != null)
-                levelEntity.setMapEntity(mapRepository.findBy(dto.getMap().getId()));
-            else
-                levelEntity.setMapEntity(null);
-            levelRepository.persist(levelEntity);
-            return levelDtoTransformer.toDto(levelEntity);
+            return getLevelDto(dto, levelEntity);
         } catch (Exception e) {
             return null;
         }
+    }
+
+    private LevelDto getLevelDto(LevelDto dto, LevelEntity levelEntity) {
+        if(dto.getMap() != null)
+            levelEntity.setMapEntity(mapRepository.findBy(dto.getMap().getId()));
+        else
+            levelEntity.setMapEntity(null);
+        if(dto.getGameId() != null)
+            levelEntity.setGameEntity(gameRepository.findBy(dto.getGameId()));
+        else
+            levelEntity.setGameEntity(null);
+        levelRepository.persist(levelEntity);
+        return levelDtoTransformer.toDto(levelEntity);
     }
 }

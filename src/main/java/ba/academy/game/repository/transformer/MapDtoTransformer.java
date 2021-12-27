@@ -14,11 +14,13 @@ public class MapDtoTransformer implements DtoTransformer<MapEntity, MapDto>{
         MapDto dto = new MapDto();
         dto.setId(entity.getId());
         dto.setMonstersDefeated(entity.getDefeatedMonsters());
-        if(entity.getDungeonEntity() != null)
-            dto.setCurrentDungeon(dungeonDtoTransformer.toDto(entity.getDungeonEntity()));
-        else
-            dto.setCurrentDungeon(null);
-        dto.setDungeons((LinkedList<DungeonDto>) dungeonDtoTransformer.toDtoList(entity.getDungeonEntitySet()));
+        dto.setCurrentDungeonId(entity.getCurrentDungeon());
+        dto.setDungeons((LinkedList<DungeonDto>)
+                dungeonDtoTransformer.toDtoList(entity.getDungeonEntitySet()));
+        for(var dungeon : dto.getDungeons()) {
+            dungeon.setMapId(dto.getId());
+        }
+        dto.setLevelId(entity.getLevelId());
         return dto;
     }
 
@@ -27,7 +29,9 @@ public class MapDtoTransformer implements DtoTransformer<MapEntity, MapDto>{
         if(entityInstance == null)
             entityInstance = new MapEntity();
 
+        entityInstance.setCurrentDungeon(dto.getCurrentDungeonId());
         entityInstance.setDefeatedMonsters(dto.getMonstersDefeated());
+        entityInstance.setLevelId(dto.getLevelId());
         return entityInstance;
     }
 }

@@ -1,27 +1,65 @@
 package ba.academy.game.dto;
 
+import javax.ws.rs.core.Response;
+
 public enum Status {
-    LAST_DUNGEON_CANT_MOVE,
-    FIRST_DUNGEON_CANT_MOVE,
-    DUNGEON_MOVE_OK,
+    LAST_DUNGEON_CANT_MOVE(false, "Can not move, this is the last dungeon!"),
+    FIRST_DUNGEON_CANT_MOVE(false, "Can not move back, this is the last dungeon!"),
+    DUNGEON_MOVE_OK(true, "You moved to another dungeon!"),
 
-    BATTLE_IS_WON,
+    BATTLE_IS_WON(true, "You defeated the monster!"),
 
-    NO_MONSTER_TO_FIGHT,
+    NO_MONSTER_TO_FIGHT(false, "There is no monster to fight!"),
 
-    NEED_TO_DEFEAT_MONSTER_TO_COLLECT,
-    COLLECT_OK,
+    NEED_TO_DEFEAT_MONSTER_TO_COLLECT(false, "In order to collect the items, " +
+            "first you need to defeat the monster!"),
+    COLLECT_OK(true, "You collected the items!"),
 
-    FLEE_OK,
-    NO_MONSTER_TO_FLEE,
+    FLEE_OK(true, "You fled the monster!"),
+    NO_MONSTER_TO_FLEE(false, "You don't need to flee. " +
+            "There are no monsters in the dungeon."),
 
-    NEED_TO_FLEE_OR_FIGHT,
+    NEED_TO_FLEE_OR_FIGHT(false, "You can not move to the next dungeon." +
+            "There is a monster in the dungeon. You can either flee or fight."),
 
-    LEVEL_LOST,
-    LEVEL_WON,
+    LEVEL_LOST(false, "Sorry! You have lost the level!"),
+    LEVEL_WON(true, "Congratulations! You have won the level."),
 
-    GAME_WON,
-    LEVEL_MOVE_OK,
+    GAME_WON(true, "Congratulations! This is the last level. " +
+            "You have won the game."),
+    LEVEL_MOVE_OK(true, "Sorry. " +
+            "You have not moved to the next level."),
 
-    NULL_POINTER
+    NULL_POINTER(false, "Ups! There has been a null pointer somewhere");
+
+
+    private boolean isOk;
+
+    private String reasonPhrase = "";
+
+    Status(boolean isOk, String reasonPhrase) {
+        this.isOk = isOk;
+        this.reasonPhrase = reasonPhrase;
+    }
+
+    public boolean isOk() {
+        return isOk;
+    }
+
+    public void setOk(boolean ok) {
+        isOk = ok;
+    }
+
+    public String getReasonPhrase() {
+        return reasonPhrase;
+    }
+
+    public void setReasonPhrase(String reasonPhrase) {
+        this.reasonPhrase = reasonPhrase;
+    }
+
+    Status() {
+    }
+
+
 }

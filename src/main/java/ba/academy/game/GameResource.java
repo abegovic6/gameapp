@@ -1,6 +1,7 @@
 package ba.academy.game;
 
 import ba.academy.game.dto.GameDto;
+import ba.academy.game.dto.Status;
 import ba.academy.game.services.GameService;
 
 import javax.inject.Inject;
@@ -73,5 +74,53 @@ public class GameResource {
             return Response.created(uriBuilder.build()).entity(updateDiaryDto).build();
         }
         return Response.status(Response.Status.BAD_REQUEST).build();
+    }
+
+    @POST
+    @Path("{id}/move")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces(value = MediaType.APPLICATION_JSON)
+    public Response move(@PathParam("id") int id, @Context UriInfo uriInfo) {
+        var status = service.move(id);
+        if(!status.isOk()) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        return Response.noContent().build();
+    }
+
+    @POST
+    @Path("{id}/fight")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces(value = MediaType.APPLICATION_JSON)
+    public Response fight(@PathParam("id") int id, @Context UriInfo uriInfo) {
+        var status = service.fight(id);
+        if(!status.isOk()) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        return Response.noContent().build();
+    }
+
+    @POST
+    @Path("{id}/flee")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces(value = MediaType.APPLICATION_JSON)
+    public Response flee(@PathParam("id") int id, @Context UriInfo uriInfo) {
+        var status = service.flee(id);
+        if(!status.isOk()) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        return Response.noContent().build();
+    }
+
+    @POST
+    @Path("{id}/collect")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces(value = MediaType.APPLICATION_JSON)
+    public Response collect(@PathParam("id") int id, @Context UriInfo uriInfo) {
+        var status = service.collect(id);
+        if(!status.isOk()) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        return Response.noContent().build();
     }
 }

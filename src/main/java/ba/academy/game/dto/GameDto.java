@@ -8,8 +8,9 @@ public class GameDto {
     private Integer score = 0;
 
     private LinkedList<LevelDto> levelDtos = new LinkedList<>();
-    private LevelDto currentLevelDto;
-    private PlayerDto playerDto;
+    private Integer currentLevelId = -1;
+    private PlayerDto player;
+    private String status;
 
     public GameDto() {
     }
@@ -38,37 +39,57 @@ public class GameDto {
         this.levelDtos = levelDtos;
     }
 
-    public LevelDto getCurrentLevelDto() {
-        return currentLevelDto;
+    public Integer getCurrentLevelId() {
+        return currentLevelId;
     }
 
-    public void setCurrentLevelDto(LevelDto currentLevelDto) {
-        this.currentLevelDto = currentLevelDto;
+    public void setCurrentLevelId(Integer currentLevelId) {
+        this.currentLevelId = currentLevelId;
     }
 
-    public PlayerDto getPlayerDto() {
-        return playerDto;
+    public String getStatus() {
+        return status;
     }
 
-    public void setPlayerDto(PlayerDto playerDto) {
-        this.playerDto = playerDto;
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public LevelDto findCurrentLevel() {
+        if(currentLevelId == -1) return null;
+
+        for(var l : levelDtos) {
+            if(l.getId().equals(currentLevelId)) {
+                return  l;
+            }
+        }
+
+        return null;
+    }
+
+    public PlayerDto getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(PlayerDto player) {
+        this.player = player;
     }
 
     public Status fight() {
         try {
-            MonsterDto monsterDto = currentLevelDto.getCurrentDungeon().getMonster();
+            MonsterDto monsterDto = findCurrentLevel().getCurrentDungeon().getMonster();
 
             if(monsterDto != null && monsterDto.getHealth() > 0) {
-                while (playerDto.getHealth() > 0 && monsterDto.getHealth() > 0) {
+                while (player.getHealth() > 0 && monsterDto.getHealth() > 0) {
                     Random random = new Random();
                     int nb = Math.abs(Math.floorMod(random.nextInt(),6))/5;
-                    monsterDto.setHealth(monsterDto.getHealth() - playerDto.getDamage() * nb);
-                    playerDto.setHealth(playerDto.getHealth() - monsterDto.getDamage() * nb);
+                    monsterDto.setHealth(monsterDto.getHealth() - player.getDamage() * nb);
+                    player.setHealth(player.getHealth() - monsterDto.getDamage() * nb);
 
-                    if(!(playerDto.getHealth() > 0)) return Status.LEVEL_LOST;
+                    if(!(player.getHealth() > 0)) return Status.LEVEL_LOST;
                     if(!(monsterDto.getHealth() > 0)) {
-                        currentLevelDto.getMap().setMonstersDefeated(currentLevelDto.getMap().getMonstersDefeated() + 1);
-                        playerDto.setWeapon(playerDto.getWeapon().getNext());
+                        findCurrentLevel().getMap().setMonstersDefeated(findCurrentLevel().getMap().getMonstersDefeated() + 1);
+                        player.setWeapon(player.getWeapon().getNext());
                         score += monsterDto.getDamage();
                         return Status.BATTLE_IS_WON;
                     }
@@ -84,17 +105,17 @@ public class GameDto {
 
     public Status collect() {
         try {
-            DungeonDto dungeonDto = currentLevelDto.getCurrentDungeon();
+            DungeonDto dungeonDto = findCurrentLevel().getCurrentDungeon();
             if(dungeonDto.getMonster() != null && dungeonDto.getMonster().getHealth() > 0)
                 return Status.NEED_TO_DEFEAT_MONSTER_TO_COLLECT;
 
             if(dungeonDto.getHealingPotion() != null)
-                playerDto.setHealth(playerDto.getHealth() + dungeonDto.getHealingPotion().getHealingPower());
+                player.setHealth(player.getHealth() + dungeonDto.getHealingPotion().getHealingPower());
 
             if(dungeonDto.getPowerUp() != null)
-                playerDto.addPowerUp(dungeonDto.getPowerUp());
+                player.addPowerUp(dungeonDto.getPowerUp());
 
-            if(currentLevelDto.getMap().lastLevel())
+            if(findCurrentLevel().getMap().lastLevel())
                 return Status.LEVEL_WON;
 
             return Status.COLLECT_OK;
@@ -106,10 +127,10 @@ public class GameDto {
 
     public Status flee() {
         try {
-            MonsterDto monsterDto = currentLevelDto.getCurrentDungeon().getMonster();
+            MonsterDto monsterDto = findCurrentLevel().getCurrentDungeon().getMonster();
 
             if(monsterDto != null && monsterDto.getHealth() > 0) {
-                playerDto.setHealth(playerDto.getHealth() - currentLevelDto.getFleeDamage());
+                player.setHealth(player.getHealth() - findCurrentLevel().getFleeDamage());
                 return Status.FLEE_OK;
             }
 
@@ -122,12 +143,14 @@ public class GameDto {
 
     public Status move() {
         try {
-            MonsterDto monsterDto = currentLevelDto.getCurrentDungeon().getMonster();
+            MonsterDto monsterDto = findCurrentLevel().getCurrentDungeon().getMonster();
             if(monsterDto != null && monsterDto.getHealth() > 0) {
                 return Status.NEED_TO_FLEE_OR_FIGHT;
             }
-
-            return currentLevelDto.getMap().moveNext();
+            var status = findCurrentLevel().getMap().moveNext();
+            if(status.equals(Status.LAST_DUNGEON_CANT_MOVE))
+                return nextLevel();
+            return status;
         } catch (NullPointerException e) {
             return Status.NULL_POINTER;
         }
@@ -136,11 +159,11 @@ public class GameDto {
 
     public Status nextLevel() {
         try {
-            int index = levelDtos.indexOf(currentLevelDto);
+            int index = levelDtos.indexOf(findCurrentLevel());
             if(index == levelDtos.size() - 1) {
                 return Status.GAME_WON;
             }
-            currentLevelDto = levelDtos.get(index + 1);
+            currentLevelId = levelDtos.get(index).getId();
             return Status.LEVEL_MOVE_OK;
         } catch (NullPointerException e) {
             return Status.NULL_POINTER;

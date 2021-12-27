@@ -8,7 +8,7 @@ public class PlayerDto {
     private Integer id;
     private Integer health;
     private Weapon weapon = Weapon.FIST;
-    private Integer powerUp = 0;
+    private Integer powerUp;
 
     public Integer getId() {
         return id;
