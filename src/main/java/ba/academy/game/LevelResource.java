@@ -2,12 +2,16 @@ package ba.academy.game;
 
 import ba.academy.game.dto.LevelDto;
 import ba.academy.game.services.LevelService;
+import org.jboss.resteasy.annotations.cache.NoCache;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
 @Path("/level")
+@RolesAllowed("admin")
+@NoCache
 public class LevelResource {
     @Inject
     LevelService service;

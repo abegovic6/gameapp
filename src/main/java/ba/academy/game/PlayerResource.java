@@ -2,12 +2,16 @@ package ba.academy.game;
 
 import ba.academy.game.dto.PlayerDto;
 import ba.academy.game.services.PlayerService;
+import org.jboss.resteasy.annotations.cache.NoCache;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
 @Path("/player")
+@RolesAllowed("admin")
+@NoCache
 public class PlayerResource {
     @Inject
     PlayerService service;

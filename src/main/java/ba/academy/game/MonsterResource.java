@@ -2,12 +2,16 @@ package ba.academy.game;
 
 import ba.academy.game.dto.MonsterDto;
 import ba.academy.game.services.MonsterService;
+import org.jboss.resteasy.annotations.cache.NoCache;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
 @Path("/monster")
+@RolesAllowed("admin")
+@NoCache
 public class MonsterResource {
     @Inject
     MonsterService service;

@@ -2,12 +2,16 @@ package ba.academy.game;
 
 import ba.academy.game.dto.MapDto;
 import ba.academy.game.services.MapService;
+import org.jboss.resteasy.annotations.cache.NoCache;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
 @Path("/map")
+@RolesAllowed("admin")
+@NoCache
 public class MapResource {
     @Inject
     MapService service;

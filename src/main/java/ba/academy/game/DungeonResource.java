@@ -2,12 +2,16 @@ package ba.academy.game;
 
 import ba.academy.game.dto.DungeonDto;
 import ba.academy.game.services.DungeonService;
+import org.jboss.resteasy.annotations.cache.NoCache;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
 @Path("/dungeon")
+@RolesAllowed("admin")
+@NoCache
 public class DungeonResource {
 
     @Inject
