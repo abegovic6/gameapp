@@ -115,8 +115,9 @@ public class GameDto {
             if(dungeonDto.getPowerUp() != null)
                 player.addPowerUp(dungeonDto.getPowerUp());
 
-            if(findCurrentLevel().getMap().lastLevel())
-                return Status.LEVEL_WON;
+            if(findCurrentLevel().getMap().lastDungeon()) {
+                return nextLevel();
+            }
 
             return Status.COLLECT_OK;
         } catch (NullPointerException e) {
@@ -130,6 +131,8 @@ public class GameDto {
             MonsterDto monsterDto = findCurrentLevel().getCurrentDungeon().getMonster();
 
             if(monsterDto != null && monsterDto.getHealth() > 0) {
+                if(findCurrentLevel().getMap().lastDungeon())
+                    return Status.CANT_FLEE_LAST_DUNGEON;
                 player.setHealth(player.getHealth() - findCurrentLevel().getFleeDamage());
                 return Status.FLEE_OK;
             }
@@ -143,13 +146,15 @@ public class GameDto {
 
     public Status move() {
         try {
+            if(status.equals(Status.GAME_WON.getReasonPhrase()))
+                return Status.GAME_WON;
             MonsterDto monsterDto = findCurrentLevel().getCurrentDungeon().getMonster();
             if(monsterDto != null && monsterDto.getHealth() > 0) {
                 return Status.NEED_TO_FLEE_OR_FIGHT;
             }
             var status = findCurrentLevel().getMap().moveNext();
             if(status.equals(Status.LAST_DUNGEON_CANT_MOVE))
-                return nextLevel();
+                return Status.COLLECT_ORB_OF_QUARKUS_TO_WIN;
             return status;
         } catch (NullPointerException e) {
             return Status.NULL_POINTER;

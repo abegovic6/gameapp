@@ -18,6 +18,8 @@ public enum Status {
     FLEE_OK(true, "You fled the monster!"),
     NO_MONSTER_TO_FLEE(false, "You don't need to flee. " +
             "There are no monsters in the dungeon."),
+    CANT_FLEE_LAST_DUNGEON(false, "This is the last dungeon in the level. " +
+            "You need to fight the monster to move!"),
 
     NEED_TO_FLEE_OR_FIGHT(false, "You can not move to the next dungeon." +
             "There is a monster in the dungeon. You can either flee or fight."),
@@ -25,10 +27,12 @@ public enum Status {
     LEVEL_LOST(false, "Sorry! You have lost the level!"),
     LEVEL_WON(true, "Congratulations! You have won the level."),
 
-    GAME_WON(true, "Congratulations! This is the last level. " +
+    COLLECT_ORB_OF_QUARKUS_TO_WIN(true, "This is the last dungeon! " +
+            "To move you need to collect the Orb of Quarkus!"),
+    GAME_WON(true, "This was the last level. Congratulations. You have collected the Orb of Quarkus." +
             "You have won the game."),
-    LEVEL_MOVE_OK(true, "Sorry. " +
-            "You have not moved to the next level."),
+    LEVEL_MOVE_OK(true, "Congratulations. You have collected the Orb of Quarkus. " +
+            "You have moved to the next level."),
 
     NULL_POINTER(false, "Ups! There has been a null pointer somewhere");
 

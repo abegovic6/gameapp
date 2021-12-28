@@ -56,7 +56,7 @@ public class MapDto {
         this.monstersDefeated = monstersDefeated;
     }
 
-    public boolean lastLevel() {
+    public boolean lastDungeon() {
         return dungeons.getLast().getId().equals(currentDungeonId);
     }
 

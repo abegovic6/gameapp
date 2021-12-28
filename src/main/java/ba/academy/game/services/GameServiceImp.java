@@ -148,6 +148,7 @@ public class GameServiceImp implements GameService{
         for(var l : game.getLevelDtos())
             updateLevel(l);
 
+        playerService.updateById(game.getPlayer().getId(), game.getPlayer());
         updateById(game.getId(), game);
     }
 

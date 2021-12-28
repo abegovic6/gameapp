@@ -10,7 +10,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
 @Path("/monster")
-@RolesAllowed("admin")
+//@RolesAllowed("admin")
 @NoCache
 public class MonsterResource {
     @Inject

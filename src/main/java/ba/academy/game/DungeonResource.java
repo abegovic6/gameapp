@@ -10,7 +10,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
 @Path("/dungeon")
-@RolesAllowed("admin")
+//@RolesAllowed("admin")
 @NoCache
 public class DungeonResource {
 

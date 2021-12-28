@@ -10,7 +10,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
 @Path("/map")
-@RolesAllowed("admin")
+//@RolesAllowed("admin")
 @NoCache
 public class MapResource {
     @Inject

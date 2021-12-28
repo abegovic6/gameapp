@@ -17,7 +17,10 @@ public class DungeonDtoTransformer implements DtoTransformer<DungeonEntity, Dung
             entity.setMonsterEntity(null);
         }
         dto.setPowerUp(entity.getPowerUp());
-
+        if(entity.getMapEntity() != null)
+            dto.setMapId(entity.getMapEntity().getId());
+        else
+            dto.setMapId(null);
         return dto;
     }
 
