@@ -134,6 +134,9 @@ public class GameDto {
                 if(findCurrentLevel().getMap().lastDungeon())
                     return Status.CANT_FLEE_LAST_DUNGEON;
                 player.setHealth(player.getHealth() - findCurrentLevel().getFleeDamage());
+                var status = findCurrentLevel().getMap().moveNext();
+                if(status.equals(Status.LAST_DUNGEON_CANT_MOVE))
+                    return Status.COLLECT_ORB_OF_QUARKUS_TO_WIN;
                 return Status.FLEE_OK;
             }
 
@@ -146,7 +149,7 @@ public class GameDto {
 
     public Status move() {
         try {
-            if(status.equals(Status.GAME_WON.getReasonPhrase()))
+            if(status != null && status.equals(Status.GAME_WON.getReasonPhrase()))
                 return Status.GAME_WON;
             MonsterDto monsterDto = findCurrentLevel().getCurrentDungeon().getMonster();
             if(monsterDto != null && monsterDto.getHealth() > 0) {

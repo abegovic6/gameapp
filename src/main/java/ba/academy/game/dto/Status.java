@@ -7,15 +7,15 @@ public enum Status {
     FIRST_DUNGEON_CANT_MOVE(false, "Can not move back, this is the last dungeon!"),
     DUNGEON_MOVE_OK(true, "You moved to another dungeon!"),
 
-    BATTLE_IS_WON(true, "You defeated the monster!"),
+    BATTLE_IS_WON(true, "You defeated the monster! Now you can collect the items or move!"),
 
     NO_MONSTER_TO_FIGHT(false, "There is no monster to fight!"),
 
     NEED_TO_DEFEAT_MONSTER_TO_COLLECT(false, "In order to collect the items, " +
             "first you need to defeat the monster!"),
-    COLLECT_OK(true, "You collected the items!"),
+    COLLECT_OK(true, "You collected the items in the dungeon!"),
 
-    FLEE_OK(true, "You fled the monster!"),
+    FLEE_OK(true, "You fled the monster! You moved to the next dungeon!"),
     NO_MONSTER_TO_FLEE(false, "You don't need to flee. " +
             "There are no monsters in the dungeon."),
     CANT_FLEE_LAST_DUNGEON(false, "This is the last dungeon in the level. " +
@@ -25,13 +25,12 @@ public enum Status {
             "There is a monster in the dungeon. You can either flee or fight."),
 
     LEVEL_LOST(false, "Sorry! You have lost the level!"),
-    LEVEL_WON(true, "Congratulations! You have won the level."),
 
-    COLLECT_ORB_OF_QUARKUS_TO_WIN(true, "This is the last dungeon! " +
-            "To move you need to collect the Orb of Quarkus!"),
+    COLLECT_ORB_OF_QUARKUS_TO_WIN(true, "This is the last dungeon in the level! " +
+            "You need to collect the Orb of Quarkus to win!"),
     GAME_WON(true, "This was the last level. Congratulations. You have collected the Orb of Quarkus." +
             "You have won the game."),
-    LEVEL_MOVE_OK(true, "Congratulations. You have collected the Orb of Quarkus. " +
+    LEVEL_MOVE_OK(true, "Congratulations. You have collected the Orb of Quarkus. You won the level!" +
             "You have moved to the next level."),
 
     NULL_POINTER(false, "Ups! There has been a null pointer somewhere");

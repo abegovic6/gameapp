@@ -19,7 +19,7 @@ public class GameResource {
 
     @GET
     @Produces(value = MediaType.APPLICATION_JSON)
-    //@RolesAllowed("admin")
+    @RolesAllowed("admin")
     public Response getAll()
     {
         var allDtos = service.getAll();
@@ -32,6 +32,7 @@ public class GameResource {
     @GET
     @Path("{id}")
     @Produces(value = MediaType.APPLICATION_JSON)
+    @RolesAllowed({"admin", "user"})
     public Response getById(@PathParam("id") int id)
     {
         var dto = service.getById(id);
@@ -44,7 +45,7 @@ public class GameResource {
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces(value = MediaType.APPLICATION_JSON)
-    //@RolesAllowed("admin")
+    @RolesAllowed("admin")
     public Response create(GameDto dtoAtribute, @Context UriInfo uriInfo)
     {
         var dto = service.create(dtoAtribute);
@@ -59,7 +60,7 @@ public class GameResource {
     @DELETE
     @Path("{id}")
     @Produces(value = MediaType.APPLICATION_JSON)
-    //@RolesAllowed("admin")
+    @RolesAllowed("admin")
     public Response deleteById(@PathParam("id") int id) {
         var dto = service.deleteById(id);
         if(dto == null) {
@@ -73,7 +74,7 @@ public class GameResource {
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces(value = MediaType.APPLICATION_JSON)
-    //@RolesAllowed("admin")
+    @RolesAllowed("admin")
     public Response updateDiary(GameDto dtoAtribute, @PathParam("id") int id, @Context UriInfo uriInfo) {
         var updateDiaryDto = service.updateById(id, dtoAtribute);
         if(updateDiaryDto != null) {
@@ -87,7 +88,7 @@ public class GameResource {
     @Path("{id}/move")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces(value = MediaType.APPLICATION_JSON)
-    //@RolesAllowed("user")
+    @RolesAllowed("user")
     public Response move(@PathParam("id") int id, @Context UriInfo uriInfo) {
         var status = service.move(id);
         if(!status.isOk()) {
@@ -100,7 +101,7 @@ public class GameResource {
     @Path("{id}/fight")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces(value = MediaType.APPLICATION_JSON)
-    //@RolesAllowed("user")
+    @RolesAllowed("user")
     public Response fight(@PathParam("id") int id, @Context UriInfo uriInfo) {
         var status = service.fight(id);
         if(!status.isOk()) {
@@ -113,7 +114,7 @@ public class GameResource {
     @Path("{id}/flee")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces(value = MediaType.APPLICATION_JSON)
-    //@RolesAllowed("user")
+    @RolesAllowed("user")
     public Response flee(@PathParam("id") int id, @Context UriInfo uriInfo) {
         var status = service.flee(id);
         if(!status.isOk()) {
@@ -126,7 +127,7 @@ public class GameResource {
     @Path("{id}/collect")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces(value = MediaType.APPLICATION_JSON)
-    //@RolesAllowed("user")
+    @RolesAllowed("user")
     public Response collect(@PathParam("id") int id, @Context UriInfo uriInfo) {
         var status = service.collect(id);
         if(!status.isOk()) {
