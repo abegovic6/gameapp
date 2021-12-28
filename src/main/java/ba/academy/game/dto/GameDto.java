@@ -168,7 +168,7 @@ public class GameDto {
             if(index == levelDtos.size() - 1) {
                 return Status.GAME_WON;
             }
-            currentLevelId = levelDtos.get(index).getId();
+            currentLevelId = levelDtos.get(index + 1).getId();
             return Status.LEVEL_MOVE_OK;
         } catch (NullPointerException e) {
             return Status.NULL_POINTER;
